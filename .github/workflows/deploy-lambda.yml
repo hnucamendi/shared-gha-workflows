@@ -1,0 +1,22 @@
+name: Deploy Lambda
+
+on:
+  workflow_call:
+    inputs:
+      isMonorepo:
+        description: 'If there are multiple lambda packages to be deployed under one project set to true'
+        default: false
+        required: false
+        type: boolean
+      functions:
+        description: 'Path to parent directory that holds lambda code'
+        default: '.'
+        required: false
+        type: string
+jobs:
+  print:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Print
+        run: echo ${{inputs.isMonorepo}}
