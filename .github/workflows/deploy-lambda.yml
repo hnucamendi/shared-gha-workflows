@@ -1,22 +1,38 @@
 name: Deploy Lambda
-
 on:
   workflow_call:
     inputs:
-      isMonorepo:
-        description: 'If there are multiple lambda packages to be deployed under one project set to true'
-        default: false
-        required: false
-        type: boolean
-      functions:
+      runtime:
+        description: 'Language runtime Ex: Go, Node'
+        required: true
+        type: string
+      runtime-version:
+        description: 'Version of lambda package'
+        required: true
+        type: string
+      function-directory:
         description: 'Path to parent directory that holds lambda code'
         default: '.'
         required: false
         type: string
+      is-monorepo:
+        description: 'If there are multiple lambda packages to be deployed under one project set to true'
+        default: false
+        required: false
+        type: boolean
 jobs:
-  print:
+  build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Print
-        run: echo ${{inputs.isMonorepo}}
+      - uses: actions/checkout@4
+      - uses: process-${{inputs.runtime}}
+        with:
+          runtime-version: ${{inputs.runtime-version}}
+          function-directory: ${{inputs.function-directory}}
+      - name: Configure Credentials
+        uses: aws-actions/configure-aws-credentials
+        with:
+          aws-region: ${{env.AWS_REGION}}
+          role-to-assume: ${{secrets.AWS_ASSUME_ROLE}}
+      - name: Deploy
+        uses: aws-actions/amazon-lambda-deploy-task-definition

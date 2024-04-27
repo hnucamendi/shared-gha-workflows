@@ -1,0 +1,27 @@
+name: Build go project
+on:
+  workflow_call:
+    inputs:
+      runtime-version:
+        description: 'go version'
+        required: true
+        type: string
+      function-directory:
+        description: 'path to lambda code'
+        required: true
+        type: string
+jobs:
+  build-go:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: ${{inputs.runtime-version}}
+      - name: Build
+        run: 'GOOS=linux GOARCH=arm64 go build -tags lambda.norpc -o bootstrap -v ${{inputs.function-directory}} main.go'
+      - name: Test
+        run: 'go test -v ${{inputs.function-directory}}'
+      lambdas=$(tree -d -L 1 -J ./{{inputs.function-directory}} | jq -j -c '.[0].contents | map(.name | select(. != "ec2_files"))')
+          echo ::set-output name=lambdas::${lambdas}
