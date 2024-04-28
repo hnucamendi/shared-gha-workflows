@@ -20,7 +20,6 @@ jobs:
         with:
           go-version: ${{inputs.runtime-version}}
       - name: Build
-        run: 'GOOS=linux GOARCH=arm64 go build -tags lambda.norpc -o bootstrap -v ${{inputs.function-directory}} main.go'
       - name: Test
         run: 'go test -v ${{inputs.function-directory}}'
       lambdas=$(tree -d -L 1 -J ./{{inputs.function-directory}} | jq -j -c '.[0].contents | map(.name | select(. != "ec2_files"))')

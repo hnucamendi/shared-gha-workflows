@@ -10,6 +10,10 @@ on:
         description: 'Version of lambda package'
         required: true
         type: string
+      function-name:
+        description: 'name of the aws lambda function'
+        required: true
+        type: string
       function-directory:
         description: 'Path to parent directory that holds lambda code'
         default: '.'
@@ -21,18 +25,26 @@ on:
         required: false
         type: boolean
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@4
-      - uses: process-${{inputs.runtime}}
-        with:
-          runtime-version: ${{inputs.runtime-version}}
-          function-directory: ${{inputs.function-directory}}
       - name: Configure Credentials
         uses: aws-actions/configure-aws-credentials
         with:
           aws-region: ${{env.AWS_REGION}}
           role-to-assume: ${{secrets.AWS_ASSUME_ROLE}}
+      - name: Setup Go
+        uses: actions/setup-go@4
+        with:
+          go-version: '1.22'
+      - name: Build Go
+        run: |
+          cd ${{inputs.function-directory}}
+          GOOS=linux GOARCH=arm64 go build -tags lambda.norpc -o bootstrap main.go
+          zip -r bootstrap.zip bootstrap
       - name: Deploy
-        uses: aws-actions/amazon-lambda-deploy-task-definition
+        run: |
+          aws lambda update-function-code \
+          --function-name ${{input.function-name}} \
+          --zip-file fileb://bootstrap.zip
