@@ -52,7 +52,7 @@ jobs:
         name: package zip
         run: |
           publish_dir="${{inputs.subdirectory}}/publish"
-          cd $public_dir
+          cd $publish_dir
 
           zip_key="${{needs.extract_ref.outputs.short_ref}}.zip"
           zip -Xor ${{zip_key}}
