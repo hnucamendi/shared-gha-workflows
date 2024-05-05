@@ -24,6 +24,8 @@ jobs:
     name: Download and Deploy Artifact
     runs-on: ubuntu-latest
     steps:
+      - name: Test
+        run: echo ${{inputs.environment == 'production' && secrets.AWS_ACCOUNT_ID_PROD || secrets.AWS_ACCOUNT_ID_DEV}}
       - name: Confgure AWS Credectials
         uses: aws-actions/configure-aws-credentials@v4
         with:
