@@ -55,7 +55,7 @@ jobs:
           cd $publish_dir
 
           zip_key="${{github.ref_name}}.zip"
-          zip -Xor ${{zip_key}}
+          zip -Xor $zip_key
 
           zip_path="${publish_dir}/${zip_key}"
           echo "zip_path=${zip_path}" >> "$GITHUB_OUTPUT"
