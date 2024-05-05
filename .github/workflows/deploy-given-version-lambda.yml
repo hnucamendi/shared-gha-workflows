@@ -18,11 +18,6 @@ on:
         description: "runtime version to use"
         type: string
         required: true
-      gha_oidc_iam_role_name:
-        description: "IAM role for GHA to assume"
-        required: true
-        type: string
-        default: "github-actions-role"
       subdirectory:
         description: "subdirectory to deploy"
         required: true
@@ -57,5 +52,5 @@ jobs:
       environment: ${{inputs.environment}}
       artifact_key: ${{needs.go_test_package_artifact.outputs.artifact_key}}
       lambda_name: ${{format('{0}-{1}', inputs.lambda_name, inputs.environment)}}
-      gha_oidc_iam_role_name: ${{inputs.gha_oidc_iam_role_name}}
+      gha_oidc_iam_role_name: 'github-actions-role'
     secrets: inherit
