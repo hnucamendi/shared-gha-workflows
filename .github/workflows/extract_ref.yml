@@ -1,10 +1,6 @@
 name: Extract Referance
 on:
   workflow_call:
-    inputs:
-      ref:
-        description: "Ref to overwrite GITHUB_REF"
-        type: string
     outputs:
       ref:
         description: "Fully qualified referance for the tag. Can be passed to actions/checkout workflow"
@@ -25,13 +21,7 @@ jobs:
     steps:
       - id: full_ref
         name: Setup Ref Using Version Tag if Specified
-        run: |
-          if ${{inputs.ref =! ''}}
-          then
-            echo "ref=${{inputs.ref}}" >> "$GITHUB_OUTPUT"
-          else
-            echo "ref=${GITHUB_REF}" >> "$GITHUB_OUTPUT"
-          fi
+        run: echo "ref=${GITHUB_REF}" >> "$GITHUB_OUTPUT"
       - id: short_ref
         name: Extract Short Ref
         run: |

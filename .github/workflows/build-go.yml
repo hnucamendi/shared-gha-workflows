@@ -6,9 +6,6 @@ on:
         description: 'Should this trigger a deploy?'
         type: boolean
         default: false
-      ref:
-        description: 'Ref to overwrite GITHUB_REF'
-        type: string
       runtime_version:
         description: 'version of go to use'
         type: string
@@ -29,8 +26,6 @@ jobs:
   extract_ref:
     name: Extract Referance
     uses: ./.github/workflows/extract_ref.yml
-    with:
-      ref: ${{inputs.ref}}
   lint_test_build_package:
     name: Go fmt, Test, Package
     runs-on: ubuntu-latest
