@@ -47,7 +47,9 @@ jobs:
           cd ${{inputs.subdirectory}}
           go test -v .
       - name: Go Build
-        run: "cd ${{inputs.subdirectory}}\nGOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -tags lambda.norpc -mod=vendor -o ./publish/bootstrap .\n  \n"
+        run: |
+          cd ${{inputs.subdirectory}}
+          GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -tags lambda.norpc -mod=vendor -o ./publish/bootstrap .
       - id: package_artifact
         name: package zip
         run: |
@@ -55,7 +57,7 @@ jobs:
           cd $publish_dir
 
           zip_key="${{github.ref_name}}.zip"
-          zip -Xor $zip_key
+          zip -Xor $zip_key .
 
           zip_path="${publish_dir}/${zip_key}"
           echo "zip_path=${zip_path}" >> "$GITHUB_OUTPUT"
