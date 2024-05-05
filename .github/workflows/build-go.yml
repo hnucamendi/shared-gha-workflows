@@ -39,9 +39,9 @@ jobs:
         with:
           ref: ${{needs.extract_ref.outputs.ref}}
       - name: Setup Go
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
-          go-verison: ${{inputs.runtime_version}}
+          go-version: ${{inputs.runtime_version}}
       - name: Go Test
         run: |
           cd ${{inputs.subdirectory}}
