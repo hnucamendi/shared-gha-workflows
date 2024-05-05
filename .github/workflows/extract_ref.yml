@@ -21,11 +21,11 @@ jobs:
     steps:
       - id: full_ref
         name: Setup Ref Using Version Tag if Specified
-        run: echo "ref=${GITHUB_REF}" >> "$GITHUB_OUTPUT"
+        run: echo "ref=${GITHUB_REF}" >> "$GITHUB_OUTPUT" && echo $ref && echo ${{github.ref}}
       - id: short_ref
         name: Extract Short Ref
         run: |
-          echo "short_ref=${echo ${{steps.full_ref.outputs.ref}} | rev | cut -d'/' -f 1 | rev}" >> "$GITHUB_OUTPUT"
+          echo "short_ref=${{github.ref_name}}" >> "$GITHUB_OUTPUT" && echo $short_ref
       - id: debug
         name: Debug
         run: |
