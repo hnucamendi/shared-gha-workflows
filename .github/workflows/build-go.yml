@@ -54,7 +54,7 @@ jobs:
           publish_dir="${{inputs.subdirectory}}/publish"
           cd $publish_dir
 
-          zip_key="${{needs.extract_ref.outputs.short_ref}}.zip"
+          zip_key="${{github.ref_name}}.zip"
           zip -Xor ${{zip_key}}
 
           zip_path="${publish_dir}/${zip_key}"
