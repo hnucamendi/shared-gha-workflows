@@ -55,5 +55,5 @@ jobs:
       environment: ${{inputs.environment}}
       artifact_key: ${{needs.go_test_package_artifact.outputs.artifact_key}}
       lambda_name: ${{format('{0}-{1}', inputs.lambda_name, inputs.environment)}}
-      gha_oidc_iam_role_name: 'github-actions-role'
+      gha_oidc_iam_name: 'github-actions-role'
     secrets: inherit
