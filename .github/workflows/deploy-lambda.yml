@@ -28,7 +28,8 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: us-east-1
-          role-to-assume: arn:aws:iam:${{secrets.AWS_ACCOUNT_ID_PROD}}:role/${{inputs.gha_oidc_role_name}}
+          role-to-assume: ${{secrets.ROLE}}
+          # role-to-assume: arn:aws:iam:${{secrets.AWS_ACCOUNT_ID_PROD}}:role/${{inputs.gha_oidc_role_name}}
       - name: Download Artifact
         uses: actions/download-artifact@v4
         with:
