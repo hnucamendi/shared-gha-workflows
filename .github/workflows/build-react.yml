@@ -1,0 +1,46 @@
+name: Build React
+on:
+  workflow_call:
+    inputs:
+      working_directory:
+        description: 'Working Directory for project'
+        type: string
+        default: "./react"
+      s3_bucket:
+        description: 's3 bucket to deploy to'
+        type: string
+        required: true
+      node_version:
+        description: 'version of node'
+        type: number
+        required: true
+      build_directory:
+        description: 'directory of app build'
+        type: string
+        default: "./dist"
+permissions:
+  contents: read
+  id-token: write
+jobs:
+  build-react:
+    name: Build React Project
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ inputs.working_directory }}
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+      - name: Install node
+        uses: actions/setup-node@v4
+        with:
+          node-version: inputs.node_version
+      - name: Install Dependencies
+        run: npm ci
+      - name: Build react app
+        run: npm run build
+      - name: Deploy application
+        uses: ./github/workflows/deploy-react.yml
+        with:
+          s3_bucket: ${{inputs.s3_bucket}}
+          build_directory: ${{ inputs.build_directory }}

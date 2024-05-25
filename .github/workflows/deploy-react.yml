@@ -1,0 +1,24 @@
+name: Deploy React
+on:
+  workflow_call:
+    inputs:
+      s3_bucket:
+        description: "S3 bucket to deploy to"
+        type: string
+        required: true
+      build_directory:
+        description: "directory of app build"
+        type: string
+        required: true
+jobs:
+  deploy-react:
+    name: Deploy React Project
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: us-east-1
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-actions-role
+      - name: Deploy Applications
+        run: aws s3 sync --delete ${{ inputs.build_directory }} s3://${{ inputs.s3_bucket }}/
