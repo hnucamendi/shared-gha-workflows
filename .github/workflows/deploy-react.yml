@@ -33,7 +33,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: us-east-1
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-actions-role
+          role-to-assume: ${{ secrets.AWS_ACCOUNT_ID }}Test:role/github-actions-role
       - name: Check out code
         uses: actions/checkout@v4
       - name: Install node
