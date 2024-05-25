@@ -29,6 +29,11 @@ jobs:
       run:
         working-directory: ${{ inputs.working_directory }}
     steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: us-east-1
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-actions-role
       - name: Check out code
         uses: actions/checkout@v4
       - name: Install node
@@ -39,10 +44,5 @@ jobs:
         run: npm ci
       - name: Build react app
         run: npm run build
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-region: us-east-1
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-actions-role
       - name: Deploy Application
         run: aws s3 sync --delete ${{ inputs.build_directory }} s3://${{ inputs.s3_bucket }}/
