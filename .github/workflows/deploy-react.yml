@@ -34,7 +34,7 @@ jobs:
         with:
           aws-region: us-east-1
           role-to-assume: arn:aws:iam::${{ vars.AWS_ACCOUNT_ID }}:role/github-actions-role
-          mask-aws-account-id: true
+          mask-aws-account-id: false
       - name: Check out code
         uses: actions/checkout@v4
       - name: Install node
