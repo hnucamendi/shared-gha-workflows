@@ -19,9 +19,7 @@ on:
         required: true
         type: string
     secrets:
-      AWS_ACCOUNT_ID_PROD:
-        required: true
-      AWS_ACCOUNT_ID_DEV:
+      AWS_ACCOUNT_ID:
         required: true
 permissions:
   contents: read
