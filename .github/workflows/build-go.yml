@@ -30,10 +30,6 @@ jobs:
       zip_key: ${{steps.package_artifact.outputs.zip_key}}
       zip_path: ${{steps.package_artifact.outputs.zip_path}}
     steps:
-      - name: logger
-        run: |
-          echo ${{inputs.runtime_version}}
-          echo ${{inputs.subdirectory}}
       - name: Checkout repo
         uses: actions/checkout@v4
         with:
