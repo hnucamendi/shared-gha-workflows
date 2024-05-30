@@ -11,6 +11,10 @@ on:
         type: string
         required: false
         default: '.'
+      lambda_name:
+        description: 'Name of the lambda'
+        type: string
+        required: true
     outputs:
       artifact_key:
         description: 'The key of the zipped build artifact in GitHub'
