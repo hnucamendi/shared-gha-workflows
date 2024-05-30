@@ -16,14 +16,15 @@ jobs:
     name: Download and Deploy Artifact
     runs-on: ubuntu-latest
     steps:
-      - name: Confgure AWS Credectials
+      - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: us-east-1
-          role-to-assume: arn:aws:iam:${{ secrets.AWS_ACCOUNT_ID }}:role/github-actions-role
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-actions-role
+          mask-aws-account-id: true
       - name: Download Artifact
         uses: actions/download-artifact@v4
         with:
           name: ${{ inputs.artifact_key }}
       - name: Deploy Lambda
-        run: aws lambda update-function-code --function-name ${{inputs.lambda_name}} --zip-file "fileb://${{inputs.artifact_key}}"
+        run: aws lambda update-function-code --function-name ${{ inputs.lambda_name }} --zip-file "fileb://${{ inputs.artifact_key }}"
