@@ -29,17 +29,15 @@ jobs:
     name: go test package artifact
     uses: ./.github/workflows/build-go.yml
     with:
-      is_deploy: true
-      runtime_version: ${{inputs.runtime_version}}
-      subdirectory: ${{inputs.subdirectory}}
+      runtime_version: ${{ inputs.runtime_version }}
+      subdirectory: ${{ inputs.subdirectory }}
     secrets: inherit
   deploy:
-    name: Deploy to (${{ inputs.version_tag }})
+    name: Deploy (${{ inputs.version_tag }})
     needs: go_test_package_artifact
     if: ${{always() && contains(needs.*.result, 'success') && !(contains(needs.*.result, 'failure'))}}
     uses: ./.github/workflows/deploy-lambda.yml
     with:
       artifact_key: ${{ needs.go_test_package_artifact.outputs.artifact_key }}
       lambda_name: ${{ inputs.lambda_name }}
-      gha_oidc_role_name: 'github-actions-role'
     secrets: inherit

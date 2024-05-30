@@ -2,10 +2,6 @@ name: Package Go Lambda
 on:
   workflow_call:
     inputs:
-      is_deploy:
-        description: 'Should this trigger a deploy?'
-        type: boolean
-        default: false
       runtime_version:
         description: 'version of go to use'
         type: string
@@ -34,6 +30,10 @@ jobs:
       zip_key: ${{steps.package_artifact.outputs.zip_key}}
       zip_path: ${{steps.package_artifact.outputs.zip_path}}
     steps:
+      - name: logger
+        run: |
+          echo $(inputs.runtime_version)
+          echo $(inputs.subdirectory)
       - name: Checkout repo
         uses: actions/checkout@v4
         with:
@@ -64,7 +64,6 @@ jobs:
           echo "zip_key=${zip_key}" >> "$GITHUB_OUTPUT"
       - id: upload_zip
         name: Upload Zip
-        if: ${{inputs.is_deploy == true }}
         uses: actions/upload-artifact@v4
         with:
           name: ${{steps.package_artifact.outputs.zip_key}}
