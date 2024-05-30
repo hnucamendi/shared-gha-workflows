@@ -31,6 +31,7 @@ jobs:
     with:
       runtime_version: ${{ inputs.runtime_version }}
       subdirectory: ${{ inputs.subdirectory }}
+      lambda_name: ${{ inputs.lambda_name }}
     secrets: inherit
   deploy:
     name: Deploy (${{ inputs.version_tag }})

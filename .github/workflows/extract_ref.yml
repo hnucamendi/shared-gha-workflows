@@ -29,5 +29,5 @@ jobs:
       - id: debug
         name: Debug
         run: |
-          echo "ref output: ${{steps.full_ref.outputs.ref}}"
-          echo "short_ref output: ${{steps.short_ref.outputs.short_ref}}"
+          echo "ref output: ${{ steps.full_ref.outputs.ref }}"
+          echo "short_ref output: ${{ steps.short_ref.outputs.short_ref }}"
