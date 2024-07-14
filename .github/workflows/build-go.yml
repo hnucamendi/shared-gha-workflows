@@ -49,7 +49,7 @@ jobs:
       - name: Go Build
         run: |
           cd ${{ inputs.subdirectory }}
-          GOOS=linux GOARCH=arm64 CGO_ENABLED=0 go build -tags lambda.norpc -mod=vendor -o ./publish/bootstrap .
+          GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -tags lambda.norpc -mod=vendor -o ./publish/bootstrap .
       - id: package_artifact
         name: package zip
         run: |
