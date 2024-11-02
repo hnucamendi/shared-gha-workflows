@@ -10,6 +10,10 @@ on:
         description: 's3 bucket to deploy to'
         type: string
         required: true
+      cloudfront_distribution_id:
+        description: 'CloudFront Distribution ID'
+        type: string
+        required: true
       node_version:
         description: 'version of node'
         type: number
@@ -47,3 +51,8 @@ jobs:
         run: npm run build
       - name: Deploy Application
         run: aws s3 sync --delete ${{ inputs.build_directory }} s3://${{ inputs.s3_bucket }}/
+      - name: Invalidate CloudFront Cache
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ inputs.cloudfront_distribution_id }} \
+            --paths "/*"
